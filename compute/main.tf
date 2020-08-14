@@ -4,14 +4,22 @@ resource "aws_key_pair" "tfec2lambdacw_keypair" {
   public_key = file(var.public_key_path)
 }
 
-data "aws_ami" "tfec2lambdacw_ami" {
+data "aws_ami" "amazon_linux_2" {
   most_recent = true
   owners = ["amazon"]
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*"]
   }
-}
+  filter {
+      name   = "root-device-type"
+      values = ["ebs"]
+    }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }  
+}  
 
 data "template_file" "tfec2lambdacw_userdata_bastion" {
   template = file("${path.module}/userdata_bastion.tpl")
@@ -38,7 +46,7 @@ resource "aws_instance" "tfec2lambdacw_bastion" {
 
   instance_type           = var.instance_type
   iam_instance_profile    = aws_iam_instance_profile.bastion_profile.name
-  ami                     = data.aws_ami.tfec2lambdacw_ami.id
+  ami                     = data.aws_ami.amazon_linux_2.id
   key_name                = aws_key_pair.tfec2lambdacw_keypair.id
   subnet_id               = element(var.subpub_ids, count.index)
   vpc_security_group_ids  = [var.sg_id]
@@ -55,7 +63,7 @@ resource "aws_instance" "tfec2lambdacw_private" {
 
   instance_type           = var.instance_type
   iam_instance_profile    = aws_iam_instance_profile.private_profile.name
-  ami                     = data.aws_ami.tfec2lambdacw_ami.id
+  ami                     = data.aws_ami.amazon_linux_2.id
   key_name                = aws_key_pair.tfec2lambdacw_keypair.id
   subnet_id               = element(var.subprv_ids, count.index)
   vpc_security_group_ids  = [var.sg_id]
