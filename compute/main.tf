@@ -35,7 +35,7 @@ data "template_file" "tfec2lambdacw_userdata_private" {
   template = file("${path.module}/userdata_private.tpl")
   vars = {
     host_name               = "private"
-    message                 = "example bastion msg 1"
+    message                 = "example private msg 1"
     log_group_trigger_name  = var.log_group_trigger_name
     log_stream_trigger_name = var.log_stream_trigger_name
   }
