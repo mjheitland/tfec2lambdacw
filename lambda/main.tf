@@ -126,6 +126,7 @@ resource "aws_lambda_function" "mylambda" {
   runtime           = "python3.7"
   description       = "A function to log to CloudWatch."
   source_code_hash  = data.archive_file.mylambda.output_base64sha256
+  timeout           = 30
 
   environment {
     variables = {
