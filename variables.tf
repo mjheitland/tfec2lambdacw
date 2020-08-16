@@ -1,10 +1,17 @@
 #--- root/variables.tf
 
-#--- networking
 variable "project_name" {
   description = "project name is used as resource tag"
   type        = string
 }
+
+variable region {
+  description = "AWS region we are deploying to"
+  type        = string
+  default     = "eu-west-1"
+}
+
+#--- networking
 variable "vpc_cidr" {
   description = "separate vpc for this project"
   type        = string

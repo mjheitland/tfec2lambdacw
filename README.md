@@ -28,8 +28,9 @@ Terraform setup commands:
 * terraform apply -auto-approve
 
 ## Test
-* ssh -A -i ~/.ssh/id_rsa ec2-user@<public ip of bastion>
-* ssh ec2-user@<private ip of private ec2 instance>
+* macOS only: ssh-add
+* ssh -A -i ~/.ssh/id_rsa ec2-user@&lt;public ip of bastion&gt;
+* ssh ec2-user@&lt;private ip of private ec2 instance&gt;
 * cd /var/myscripts
 * source send_cw_event.sh # sends a CW event to log_group_to_trigger_mylambda
 * check /aws/lambda/mylambda # lambda 'mylambda' was triggered by the new event in log_group_to_trigger_mylambda
