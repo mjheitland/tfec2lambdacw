@@ -1,22 +1,28 @@
 #--- networking/outputs.tf ---
 output "vpc_id" {
-  value = aws_vpc.tfec2lambdacw_vpc.id
+  value = aws_vpc.vpc.id
 }
 output "igw_id" {
-  value = aws_internet_gateway.tfec2lambdacw_igw.id
+  value = aws_internet_gateway.igw.id
 }
 output "subpub_ids" {
-  value = aws_subnet.tfec2lambdacw_subpub.*.id
+  value = aws_subnet.subpub.*.id
 }
 output "subprv_ids" {
-  value = aws_subnet.tfec2lambdacw_subprv.*.id
+  value = aws_subnet.subprv.*.id
 }
 output "sg_id" {
-  value = aws_security_group.tfec2lambdacw_sg.id
+  value = aws_security_group.sg_pub.id
 }
 output "rtpub_ids" {
-  value = aws_route_table.tfec2lambdacw_rtpub.*.id
+  value = aws_route_table.rt_pub.*.id
 }
 output "rtprv_ids" {
-  value = aws_default_route_table.tfec2lambdacw_rtprv.*.id
+  value = aws_route_table.rt_prv.*.id
+}
+output "natgw_eip" {
+  value = aws_eip.natgw_eip.id
+}
+output "natgw" {
+  value = aws_nat_gateway.natgw.id
 }

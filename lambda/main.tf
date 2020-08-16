@@ -78,7 +78,7 @@ resource "aws_iam_role_policy" "lambda_logging" {
 POLICY
 }
 
-resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSClusterPolicy" {
+resource "aws_iam_role_policy_attachment" "ENI-Policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess"
   role       = aws_iam_role.mylambda.id
 }
@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSClusterPolicy" {
 #---------------
 
 resource "aws_security_group" "sg_mylambda" {
-  name        = "tfec2lambdacw_sg_mylambda"
+  name        = "sg_pub_mylambda"
   description = "Used to access lambda"
   vpc_id      = var.vpc_id
  ingress {

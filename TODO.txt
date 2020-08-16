@@ -1,0 +1,8 @@
+aws lambda create-event-source-mapping \
+--event-source-arn 'arn:aws:sqs:eu-west-1:094033154904:mysqs' \
+--function-name 'arn:aws:lambda:eu-west-1:094033154904:function:mylambda' \
+--enabled \
+--batch-size 1 \
+--region eu-west-1
+
+ssh ec2-user@10.0.1.253
