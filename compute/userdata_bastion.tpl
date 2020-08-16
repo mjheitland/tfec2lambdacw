@@ -1,7 +1,10 @@
 #!/bin/bash
 echo "Host: ${host_name}" >> /var/log/log.txt
 echo "Starting update ..." >> /var/log/log.txt
-yum update -y
+yum -y update
+yum -y install python3
+pip3 install boto3 
+pip3 install jq
 echo "... update finished." >> /var/log/log.txt
 
 echo "Starting cw log script creation ..." >> /var/log/log.txt

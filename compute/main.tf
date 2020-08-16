@@ -74,7 +74,6 @@ resource "aws_instance" "tfec2lambdacw_private" {
   }
 }
 
-
 resource "aws_iam_role" "EC2-Cloudwatch-Role" {
     name               = "EC2-Cloudwatch-Role"
     path               = "/"
@@ -88,6 +87,53 @@ resource "aws_iam_role" "EC2-Cloudwatch-Role" {
         "Service": "ec2.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy" "EC2-SQS-Policy" {
+    name   = "EC2-SQS-Policy"
+    role   = aws_iam_role.EC2-Cloudwatch-Role.id
+    policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ApiSQSPolicy",
+      "Action": [
+        "sqs:*",
+        "sqs:ReceiveMessage"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy" "EC2-Lambda-Policy" {
+    name   = "EC2-Lambda-Policy"
+    role   = aws_iam_role.EC2-Cloudwatch-Role.id
+    policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ApiSQSPolicy",
+      "Action": [
+        "lambda:*",
+        "lambda:GetFunction",
+        "lambda:CreateEventSourceMapping",
+        "lambda:DeleteEventSourceMapping",
+        "lambda:UpdateEventSourceMapping",
+        "lambda:GetEventSourceMapping",
+        "lambda:ListEventSourceMappings"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
     }
   ]
 }
