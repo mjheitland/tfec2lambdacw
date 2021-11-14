@@ -3,7 +3,7 @@
 project_name = "tfec2lambdacw"
 
 # networking
-vpc_cidr     = "10.0.0.0/16"
+vpc_cidr = "10.0.0.0/16"
 subpub_cidrs = [
   "10.0.0.0/24",
   #"10.0.2.0/24",
@@ -26,10 +26,10 @@ service_ports = [
     to_port   = 443
   },
 ]
-access_ip    = "0.0.0.0/0"
+access_ip = "0.0.0.0/0"
 
 #--- logs
-log_group_trigger_name = "log_group_to_trigger_mylambda"
+log_group_trigger_name  = "log_group_to_trigger_mylambda"
 log_stream_trigger_name = "stream_1"
 
 #--- compute

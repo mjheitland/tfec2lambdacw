@@ -1,19 +1,19 @@
 #-- networking/main.tf ---
 
-data "aws_region" "current" { }
+data "aws_region" "current" {}
 
 data "aws_availability_zones" "available" {}
 
 locals {
-  region  = data.aws_region.current.name
+  region = data.aws_region.current.name
 }
 
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
-  tags = { 
-    Name = format("%s_vpc", var.project_name)
+  tags = {
+    Name         = format("%s_vpc", var.project_name)
     project_name = var.project_name
   }
 }
@@ -21,36 +21,36 @@ resource "aws_vpc" "vpc" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = { 
-    Name = format("%s_igw", var.project_name)
+  tags = {
+    Name         = format("%s_igw", var.project_name)
     project_name = var.project_name
   }
 }
 
 resource "aws_subnet" "subpub" {
-  count                   = length(var.subpub_cidrs)
+  count = length(var.subpub_cidrs)
 
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.subpub_cidrs[count.index]
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[count.index]
-  
-  tags = { 
-    Name = format("%s_subpub_%d", var.project_name, count.index + 1)
+
+  tags = {
+    Name         = format("%s_subpub_%d", var.project_name, count.index + 1)
     project_name = var.project_name
   }
 }
 
 resource "aws_subnet" "subprv" {
-  count                   = length(var.subprv_cidrs)
+  count = length(var.subprv_cidrs)
 
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.subprv_cidrs[count.index]
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[count.index]
 
-  tags = { 
-    Name = format("%s_subprv_%d", var.project_name, count.index + 1)
+  tags = {
+    Name         = format("%s_subprv_%d", var.project_name, count.index + 1)
     project_name = var.project_name
   }
 }
@@ -60,7 +60,7 @@ resource "aws_security_group" "sg_pub" {
   description = "Used for access to the public instances"
   vpc_id      = aws_vpc.vpc.id
   dynamic "ingress" {
-    for_each = [ for s in var.service_ports: {
+    for_each = [for s in var.service_ports : {
       from_port = s.from_port
       to_port   = s.to_port
     }]
@@ -78,8 +78,8 @@ resource "aws_security_group" "sg_pub" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { 
-    Name = format("%s_sgpub", var.project_name)
+  tags = {
+    Name         = format("%s_sgpub", var.project_name)
     project_name = var.project_name
   }
 }
@@ -93,7 +93,7 @@ resource "aws_route_table" "rt_pub" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = format("%s_rt_pub", var.project_name)
+    Name         = format("%s_rt_pub", var.project_name)
     project_name = var.project_name
   }
 }
@@ -109,7 +109,7 @@ resource "aws_route_table_association" "rt_pubassoc" {
 resource "aws_route_table" "rt_prv" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = format("%s_rt_prv", var.project_name)
+    Name         = format("%s_rt_prv", var.project_name)
     project_name = var.project_name
   }
 }
@@ -127,7 +127,7 @@ resource "aws_eip" "natgw_eip" {
   associate_with_private_ip = "10.0.0.5"
 
   tags = {
-    Name = format("%s_natgw_eip", var.project_name)
+    Name         = format("%s_natgw_eip", var.project_name)
     project_name = var.project_name
   }
 }
@@ -137,7 +137,7 @@ resource "aws_nat_gateway" "natgw" {
   subnet_id     = aws_subnet.subpub[0].id
 
   tags = {
-    Name = format("%s_natgw", var.project_name)
+    Name         = format("%s_natgw", var.project_name)
     project_name = var.project_name
   }
 
@@ -154,11 +154,11 @@ resource "aws_vpc_endpoint" "vpce-log" {
   vpc_id              = aws_vpc.vpc.id
   service_name        = "com.amazonaws.${local.region}.logs"
   vpc_endpoint_type   = "Interface"
-  security_group_ids  = [ aws_security_group.sg_pub.id ]
+  security_group_ids  = [aws_security_group.sg_pub.id]
   subnet_ids          = aws_subnet.subprv.*.id
   private_dns_enabled = true
   tags = {
-    Name = format("%s_vpce_log", var.project_name)
+    Name         = format("%s_vpce_log", var.project_name)
     project_name = var.project_name
   }
 }

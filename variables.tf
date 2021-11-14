@@ -5,7 +5,7 @@ variable "project_name" {
   type        = string
 }
 
-variable region {
+variable "region" {
   description = "AWS region we are deploying to"
   type        = string
   default     = "eu-west-1"
@@ -16,11 +16,11 @@ variable "vpc_cidr" {
   description = "separate vpc for this project"
   type        = string
 }
-variable "subpub_cidrs" { 
+variable "subpub_cidrs" {
   description = "cidr blocks for public subnets"
   type        = list(string)
 }
-variable "subprv_cidrs" { 
+variable "subprv_cidrs" {
   description = "cidr blocks for private subnets"
   type        = list(string)
 }

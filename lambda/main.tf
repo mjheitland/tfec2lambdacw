@@ -4,7 +4,7 @@
 # Data Providers
 #---------------
 
-data "aws_region" "current" { }
+data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
 
@@ -28,14 +28,14 @@ locals {
 #-------------------
 
 resource "aws_iam_role" "mylambda" {
-    name               = format("%s_mylambda", var.project_name)
+  name = format("%s_mylambda", var.project_name)
 
-    tags = { 
-      Name = format("%s_mylambda", var.project_name)
-      project_name = var.project_name
-    }
+  tags = {
+    Name         = format("%s_mylambda", var.project_name)
+    project_name = var.project_name
+  }
 
-    assume_role_policy = <<POLICY
+  assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -52,9 +52,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "lambda_logging" {
-    name   = "lambda_logging"
-    role   = aws_iam_role.mylambda.id
-    policy = <<POLICY
+  name   = "lambda_logging"
+  role   = aws_iam_role.mylambda.id
+  policy = <<POLICY
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -92,7 +92,7 @@ resource "aws_security_group" "sg_mylambda" {
   name        = "sg_pub_mylambda"
   description = "Used to access lambda"
   vpc_id      = var.vpc_id
- ingress {
+  ingress {
     description = "TLS from VPC"
     from_port   = 443
     to_port     = 443
@@ -107,8 +107,8 @@ resource "aws_security_group" "sg_mylambda" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { 
-    Name = format("%s_sgpub", var.project_name)
+  tags = {
+    Name         = format("%s_sgpub", var.project_name)
     project_name = var.project_name
   }
 }
@@ -119,14 +119,14 @@ resource "aws_security_group" "sg_mylambda" {
 #----------------
 
 resource "aws_lambda_function" "mylambda" {
-  filename          = "mylambda.zip"
-  function_name     = "mylambda"
-  role              = aws_iam_role.mylambda.arn
-  handler           = "mylambda.mylambda"
-  runtime           = "python3.7"
-  description       = "A function to log to CloudWatch."
-  source_code_hash  = data.archive_file.mylambda.output_base64sha256
-  timeout           = 30
+  filename         = "mylambda.zip"
+  function_name    = "mylambda"
+  role             = aws_iam_role.mylambda.arn
+  handler          = "mylambda.mylambda"
+  runtime          = "python3.7"
+  description      = "A function to log to CloudWatch."
+  source_code_hash = data.archive_file.mylambda.output_base64sha256
+  timeout          = 30
 
   environment {
     variables = {
@@ -139,8 +139,8 @@ resource "aws_lambda_function" "mylambda" {
     security_group_ids = aws_security_group.sg_mylambda.*.id
   }
 
-  tags = { 
-    Name = format("%s_mylambda", var.project_name)
+  tags = {
+    Name         = format("%s_mylambda", var.project_name)
     project_name = var.project_name
   }
 }

@@ -1,11 +1,11 @@
 #--- root/main.tf ---
 provider "aws" {
-  region  = var.region
+  region = var.region
 }
 
 module "networking" {
-  source        = "./networking"
-  
+  source = "./networking"
+
   access_ip     = var.access_ip
   project_name  = var.project_name
   service_ports = var.service_ports
@@ -15,16 +15,16 @@ module "networking" {
 }
 
 module "log" {
-  source          = "./log"
-  
+  source = "./log"
+
   log_group_trigger_name  = var.log_group_trigger_name
   log_stream_trigger_name = var.log_stream_trigger_name
   project_name            = var.project_name
 }
 
 module "compute" {
-  source          = "./compute"
-  
+  source = "./compute"
+
   instance_type           = var.instance_type
   key_name                = var.key_name
   log_group_trigger_name  = var.log_group_trigger_name
@@ -37,12 +37,12 @@ module "compute" {
 }
 
 module "lambda" {
-  source          = "./lambda"
-  
-  log_group_trigger_arn   = module.log.log_group_trigger_arn
-  log_group_trigger_name  = var.log_group_trigger_name
-  project_name            = var.project_name
-  subprv_ids              = module.networking.subprv_ids
-  vpc_cidr                = var.vpc_cidr
-  vpc_id                  = module.networking.vpc_id
+  source = "./lambda"
+
+  log_group_trigger_arn  = module.log.log_group_trigger_arn
+  log_group_trigger_name = var.log_group_trigger_name
+  project_name           = var.project_name
+  subprv_ids             = module.networking.subprv_ids
+  vpc_cidr               = var.vpc_cidr
+  vpc_id                 = module.networking.vpc_id
 }
