@@ -25,8 +25,12 @@ service_ports = [
     from_port = 443,
     to_port   = 443
   },
+  { # web https
+    from_port = 5555,
+    to_port   = 5555
+  },
 ]
-access_ip = "0.0.0.0/0"
+access_ip = "77.21.223.112/32" # "0.0.0.0/0"
 
 #--- logs
 log_group_trigger_name  = "log_group_to_trigger_mylambda"

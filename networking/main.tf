@@ -55,6 +55,35 @@ resource "aws_subnet" "subprv" {
   }
 }
 
+resource "aws_security_group" "sg_ping" {
+  name        = "sgping"
+  description = "Used to allow ping to public ec2 instances"
+  vpc_id      = aws_vpc.vpc.id
+  ingress { # allow ping
+    from_port   = 8
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 0 # the ICMP type number for 'Echo Reply'
+    to_port     = 0 # the ICMP code
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name    = format("%s_sg_ping", var.project_name)
+    project = var.project_name
+  }
+}
+
 resource "aws_security_group" "sg_pub" {
   name        = "sg_pubpub"
   description = "Used for access to the public instances"

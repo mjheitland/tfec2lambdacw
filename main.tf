@@ -31,6 +31,7 @@ module "compute" {
   log_stream_trigger_name = var.log_stream_trigger_name
   project_name            = var.project_name
   public_key_path         = var.public_key_path
+  sg_ping_id              = module.networking.sg_ping_id
   sg_id                   = module.networking.sg_id
   subprv_ids              = module.networking.subprv_ids
   subpub_ids              = module.networking.subpub_ids

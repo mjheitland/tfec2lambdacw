@@ -11,6 +11,9 @@ output "subpub_ids" {
 output "subprv_ids" {
   value = aws_subnet.subprv.*.id
 }
+output "sg_ping_id" {
+  value = aws_security_group.sg_ping.id
+}
 output "sg_id" {
   value = aws_security_group.sg_pub.id
 }

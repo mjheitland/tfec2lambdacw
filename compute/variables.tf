@@ -23,6 +23,10 @@ variable "subprv_ids" {
   description = "ids of private subnets"
   type        = list(string)
 }
+variable "sg_ping_id" {
+  description = "id of security group"
+  type        = string
+}
 variable "sg_id" {
   description = "id of security group"
   type        = string

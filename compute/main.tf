@@ -49,7 +49,7 @@ resource "aws_instance" "bastion" {
   ami                    = data.aws_ami.amazon_linux_2.id
   key_name               = aws_key_pair.keypair.id
   subnet_id              = element(var.subpub_ids, count.index)
-  vpc_security_group_ids = [var.sg_id]
+  vpc_security_group_ids = [var.sg_ping_id, var.sg_id]
   user_data              = data.template_file.userdata_bastion.*.rendered[0]
   tags = {
     Name         = format("%s_bastion_%d", var.project_name, count.index)
