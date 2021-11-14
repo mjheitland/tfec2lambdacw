@@ -3,7 +3,7 @@ echo "Host: ${host_name}" >> /var/log/log.txt
 echo "Starting update ..." >> /var/log/log.txt
 yum -y update
 yum -y install python3
-pip3 install boto3 
+pip3 install boto3
 pip3 install jq
 echo "... update finished." >> /var/log/log.txt
 
@@ -11,7 +11,7 @@ echo "Starting cw log script creation ..." >> /var/log/log.txt
 
 # create script directory
 scriptdir=/var/myscripts
-scriptfile=send_cw_event.sh 
+scriptfile=send_cw_event.sh
 mkdir -p $scriptdir
 
 # shell command to send CloudWatch events (for triggering mylambda who has subscribed to the log group)

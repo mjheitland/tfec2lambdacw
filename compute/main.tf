@@ -22,7 +22,7 @@ data "aws_ami" "amazon_linux_2" {
 }
 
 data "template_file" "userdata_bastion" {
-  template = file("${path.module}/userdata_bastion.tpl")
+  template = file("${path.module}/userdata_webserver.tpl")
   vars = {
     host_name               = "bastion"
     message                 = "example bastion msg 1"

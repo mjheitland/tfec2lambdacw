@@ -3,7 +3,7 @@ echo "Host: ${host_name}" >> /var/log/log.txt
 echo "Starting update ..." >> /var/log/log.txt
 yum -y update
 yum -y install python3
-pip3 install boto3 
+pip3 install boto3
 pip3 install jq
 echo "... update finished." >> /var/log/log.txt
 
