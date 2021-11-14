@@ -30,7 +30,7 @@ service_ports = [
     to_port   = 5555
   },
 ]
-access_ip = "77.21.223.112/32" # "0.0.0.0/0"
+access_ip = "77.21.223.111/32" # get your external ip address with https://whatismyipaddress.com/
 
 #--- logs
 log_group_trigger_name  = "log_group_to_trigger_mylambda"
